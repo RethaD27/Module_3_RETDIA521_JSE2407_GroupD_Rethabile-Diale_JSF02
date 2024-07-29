@@ -2,43 +2,42 @@
   import { onMount } from 'svelte';
   import { navigate } from 'svelte-routing';
 
+  /** @type {string} */
   export let id;
 
+  /** @type {boolean} */
   let loading = true;
+
+  /** @type {object|null} */
   let product = null;
-  let error = null;
 
   /**
    * Fetches product details from the API and sets the product state.
    * @returns {Promise<void>}
    */
   async function fetchProductDetails() {
-    try {
-      const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-      if (!response.ok) throw new Error('Failed to fetch product details');
-      product = await response.json();
-    } catch (err) {
-      error = err.message;
-    } finally {
-      loading = false;
-    }
+    const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+    const data = await response.json();
+    product = data;
   }
 
   /**
    * Navigates back to the home page.
    */
   function goBack() {
-    window.history.back();
+    navigate('/');
   }
 
-  onMount(fetchProductDetails);
+  // Fetch product details on component mount
+  onMount(async () => {
+    await fetchProductDetails();
+    loading = false;
+  });
 </script>
 
 <div class="container mx-auto p-6">
   {#if loading}
     <div class="loading text-center text-2xl">Loading...</div>
-  {:else if error}
-    <div class="error text-center text-2xl text-red-500">{error}</div>
   {:else if product}
     <button on:click={goBack} class="bg-gray-500 text-white px-4 py-2 rounded mb-4">Back</button>
     <div class="flex flex-col items-center">
@@ -52,8 +51,8 @@
         {product.category}
       </span>
       <div class="text-gray-700 mt-2 flex items-center">
-        {#each Array(5) as _, i}
-          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" class="w-4 h-4 {i < Math.round(product.rating.rate) ? 'text-yellow-500' : 'text-gray-300'}">
+        {#each Array(5).fill(0) as _, i}
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" class="w-4 h-4 {i < product.rating.rate ? 'text-yellow-500' : 'text-gray-300'}">
             <path d="M10 15.273l-5.227 2.75 1.002-5.79-4.2-4.1 5.872-.852L10 1.273l2.554 5.217 5.872.852-4.2 4.1 1.002 5.79L10 15.273z" />
           </svg>
         {/each}
@@ -63,3 +62,7 @@
   {/if}
 </div>
 
+<style>
+  /* Add your styles here */
+</style>
+ 
