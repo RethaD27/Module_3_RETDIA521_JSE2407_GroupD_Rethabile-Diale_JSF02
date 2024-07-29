@@ -113,6 +113,9 @@
   }
 </script>
 
+<style>
+  /* Add your styles here */
+</style>
 
 <body class="bg-blue-200 min-h-screen">
   <!-- Navigation Bar -->
