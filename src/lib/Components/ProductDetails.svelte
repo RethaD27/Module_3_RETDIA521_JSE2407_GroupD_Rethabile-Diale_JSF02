@@ -28,7 +28,7 @@
    * Navigates back to the home page.
    */
   function goBack() {
-    navigate('/');
+    window.history.back();
   }
 
   onMount(fetchProductDetails);
