@@ -8,5 +8,3 @@
   <Route path="/" component={Home} />
   <Route path="product/:id" component={ProductDetails} />
 </Router>
-
-
