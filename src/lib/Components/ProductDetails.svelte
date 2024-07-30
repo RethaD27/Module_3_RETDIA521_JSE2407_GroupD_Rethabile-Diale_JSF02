@@ -25,7 +25,7 @@
    * Navigates back to the home page.
    */
   function goBack() {
-    navigate('/');
+    window.history.back();
   }
 
   // Fetch product details on component mount
@@ -39,7 +39,7 @@
   {#if loading}
     <div class="loading text-center text-2xl">Loading...</div>
   {:else if product}
-    <button on:click={goBack} class="bg-gray-500 text-white px-4 py-2 rounded mb-4">Back</button>
+    <button on:click={goBack} class="bg-gray-500 text-white px-4 py-2 rounded mb-4">Go Back</button>
     <div class="flex flex-col items-center">
       <h3 class="text-lg font-bold mb-2">{product.title}</h3>
       <div class="flex justify-center mb-4">
